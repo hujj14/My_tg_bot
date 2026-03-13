@@ -9,7 +9,7 @@ def Parser(datafromDB):
         "A|M" : "Английский с М"
     }
     fin = []
-    if datafromDB is None :
+    if len(datafromDB) == 0:
         return "Сегодня занятий нет"
     for i in datafromDB.split(","):
         originalstr = ""

@@ -1,49 +1,60 @@
 import sqlite3
 import telebot
+import time
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 from tgToken import tgToken
+from parser import Parser
 
+scheduler = BackgroundScheduler()
+bot = telebot.TeleBot(tgToken)
 DB_PATH="data.db"
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("""
-        CREATE TABLE message (
+        CREATE TABLE timetable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT,
-            text TEXT
-            created_at INTEGER,
-            chat_id INTEGET
+            Monday TEXT,
+            Tuesday TEXT,
+            Wednsday TEXT,
+            Thursday TEXT,
+            Friday TEXT,
+            Saturday TEXT,
+            Sunday TEXT
                 
         )
     """)
     conn.commit()
     conn.close()
 
-def save_message(user_id, chat_id, text, created_at):
+def insertDB():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
-    cur.execute(
-        "INSERT INTO messsage (user_id, chat_id, text, created_at) VALUES (?, ?, ?, ?)",
-        (user_id, chat_id, text, created_at)
-    )
-    conn.commit()
+    cur.execute("INSERT INTO timetable (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                ("A|J-19:00, I-21:00","", "M-17:00, A|M-21;00,", "F-19:00", "A|J-19:00, I-21:00", "F|2-17:00", "M|2-13:00, I-21:00"))
     conn.close()
 
-bot = telebot.TeleBot(tgToken)
+def sendmessage():
+    daytoday = datetime.now().strftime("%A")
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    quary = f"SELECT {daytoday} FROM timetable"
+    cur.execute(quary)
+    rows = cur.fetchall()
+
+    conn.close()
+    return rows
 
 init_db()
+insertDB()
 
-@bot.message_handler(content_types={"text"})
+@bot.message_handler(commands={"start"})
 def main(message):
     bot.send_message(message.chat.id,"hello")
-    save_message(
-        user_id=message.from_user.id,
-        chat_id = message.from_chat_id,
-        text=message.text,
-        created_at=message.date
-    )
-    bot.reply_to(message, "Данные записаны в базу")
+
+scheduler.add_job(sendmessage,"cron", hour=15, minutes=0)
 
 
 bot.polling(non_stop=True)
