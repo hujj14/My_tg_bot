@@ -5,16 +5,17 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-    runs-on: label-1
-    steps:
-    - name: Chekout
-      uses: actions/checkout@v6.0.2
-    - name: VenvAct
-      run: python3 -m venv venv
-    - name: requirements
-      run: venv/bin/pip install -r requirements.txt
-    - name: Secrets
-      run: touch tgToken.py && echo ${{secrets.tgToken}} >> tgToken.py && echo "\n" >> tgToken.py && echo ${{secrets.chatId}} >> tgToken.py
-    - name: Start
-      run: python3 app.py
+    jobs:
+      apppy:
+        runs-on: label-1
+        steps:
+        - name: Chekout
+        uses: actions/checkout@v6.0.2
+        - name: VenvAct
+          run: python3 -m venv venv
+        - name: requirements
+          run: venv/bin/pip install -r requirements.txt
+        - name: Secrets
+          run: touch tgToken.py && echo ${{secrets.tgToken}} >> tgToken.py && echo "\n" >> tgToken.py && echo ${{secrets.chatId}} >> tgToken.py
+        - name: Start
+          run: python3 app.py
