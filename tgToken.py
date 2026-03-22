@@ -1,0 +1,2 @@
+tgToken = "8348049644:AAEG85b3XJcEt3Ese1mzoa1E_uJBtr4uHHI"
+chatId = 1709874330
