@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-permissions:
-  contents: read
-  
     runs-on: label-1
     steps:
     - name: Chekout
