@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: label-1
 
     steps: Chekout
       uses: actions/checkout@v6.0.2
