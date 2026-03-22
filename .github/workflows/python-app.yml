@@ -16,6 +16,6 @@ on:
         - name: requirements
           run: venv/bin/pip install -r requirements.txt
         - name: Secrets
-          run: touch tgToken.py && echo ${{secrets.tgToken}} >> tgToken.py && echo "\n" >> tgToken.py && echo ${{secrets.chatId}} >> tgToken.py
+          run: touch tgToken.py && echo ${{secrets.TGTOKEN}} >> tgToken.py && echo "\n" >> tgToken.py && echo ${{secrets.CHATID}} >> tgToken.py
         - name: Start
           run: python3 app.py
