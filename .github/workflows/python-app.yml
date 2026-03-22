@@ -3,13 +3,14 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: label-1
-    steps: Chekout
+    steps:
+    - name: Chekout
       uses: actions/checkout@v6.0.2
-    steps: VenvAct
+    - name: VenvAct
       run: python3 -m venv venv
-    steps: requirements
+    - name: requirements
       run: venv/bin/pip install -r requirements.txt
-    steps: Secrets
+    - name: Secrets
       run: touch tgToken.py &&\tgToken.py >> ${{secrets.tgToken}} &&\tgToken.py >> ${{secrets.chatId}} &&\
-    steps: Start
+    - name: Start
       run: python3 app.py
