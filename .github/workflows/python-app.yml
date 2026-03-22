@@ -7,10 +7,10 @@ on:
     branches: [ "main" ]
     jobs:
       apppy:
-        runs-on: label-1
+        runs-on: self-hosted
         steps:
         - name: Chekout
-        uses: actions/checkout@v6.0.2
+          uses: actions/checkout@v6.0.2
         - name: VenvAct
           run: python3 -m venv venv
         - name: requirements
